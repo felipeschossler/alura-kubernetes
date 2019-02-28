@@ -5,33 +5,32 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: mysql-app-name
-  serviceName: mysql-servicename
+      app: mysql-labels-name
+  serviceName: db
   template:
     metadata:
       labels:
-        name: mysql-labels-name
+        app: mysql-labels-name
     spec:
       containers:
-      - name: container-mysql
-        image: mysql:5.7.19
-        resources:
-          limits:
-            memory: "128Mi"
-            cpu: "500m"
-        ports:
-        - containerPort: 3306
-        env:
-        - name: MYSQL_DATABASE
-          value: "loja"
-        - name: MYSQL_USER
-          value: "root"
-        - name: MYSQL_ALLOW_EMPTY_PASSWORD
-          value: "1"
-        volumeMounts:
+        - name: container-mysql
+          image: mysql:5.7.19
+          resources:
+            limits:
+              memory: "1Gi"
+          ports:
+            - containerPort: 3306
+          env:
+            - name: MYSQL_DATABASE
+              value: "loja"
+            - name: MYSQL_USER
+              value: "root"
+            - name: MYSQL_ALLOW_EMPTY_PASSWORD
+              value: "1"
+          volumeMounts:
+            - name: volume-mysql
+              mountPath: /var/lib/mysql
+      volumes:
         - name: volume-mysql
-          mountPath: /var/lib/mysql
-    volumes:
-    - name: volume-mysql
-      persistentVolumeClaim: 
-        claimName: configuracao-mysql
+          persistentVolumeClaim:
+            claimName: configuracao-mysql
